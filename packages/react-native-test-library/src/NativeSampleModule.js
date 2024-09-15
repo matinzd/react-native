@@ -14,6 +14,7 @@ import {TurboModuleRegistry} from 'react-native';
 
 export interface Spec extends TurboModule {
   +getRandomNumber: () => number;
+  +requestSamplePermission: () => Promise<boolean>;
 }
 
 export default (TurboModuleRegistry.get<Spec>('NativeSampleModule'): ?Spec);

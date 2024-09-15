@@ -106,6 +106,20 @@ function NativeSampleModuleWrapper(props: {}): React.Node {
         }}
       />
       <Text style={styles.column}>{randomNumber}</Text>
+      <Button
+        title="Request sample permission"
+        onPress={() => {
+          NativeSampleModule?.requestSamplePermission()
+            .then(result => {
+              console.log(
+                'Request sample permission result: ' + result.toString(),
+              );
+            })
+            .catch(error => {
+              console.error('Request sample permission error: ' + error);
+            });
+        }}
+      />
     </View>
   );
 }
