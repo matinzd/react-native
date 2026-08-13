@@ -155,32 +155,6 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
     updateView(); // call after changing ellipsizeLocation in particular
   }
 
-  private static WritableMap inlineViewJson(
-      int visibility,
-      int index,
-      int left,
-      int top,
-      int right,
-      int bottom,
-      DisplayMetrics metrics) {
-    WritableMap json = Arguments.createMap();
-    if (visibility == View.GONE) {
-      json.putString("visibility", "gone");
-      json.putInt("index", index);
-    } else if (visibility == View.VISIBLE) {
-      json.putString("visibility", "visible");
-      json.putInt("index", index);
-      json.putDouble("left", PixelUtil.toDIPFromPixel(left, metrics));
-      json.putDouble("top", PixelUtil.toDIPFromPixel(top, metrics));
-      json.putDouble("right", PixelUtil.toDIPFromPixel(right, metrics));
-      json.putDouble("bottom", PixelUtil.toDIPFromPixel(bottom, metrics));
-    } else {
-      json.putString("visibility", "unknown");
-      json.putInt("index", index);
-    }
-    return json;
-  }
-
   @Override
   protected void onLayout(
       boolean changed, int textViewLeft, int textViewTop, int textViewRight, int textViewBottom) {
