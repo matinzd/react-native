@@ -18,6 +18,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -155,7 +156,13 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
   }
 
   private static WritableMap inlineViewJson(
-      int visibility, int index, int left, int top, int right, int bottom) {
+      int visibility,
+      int index,
+      int left,
+      int top,
+      int right,
+      int bottom,
+      DisplayMetrics metrics) {
     WritableMap json = Arguments.createMap();
     if (visibility == View.GONE) {
       json.putString("visibility", "gone");
@@ -163,10 +170,10 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
     } else if (visibility == View.VISIBLE) {
       json.putString("visibility", "visible");
       json.putInt("index", index);
-      json.putDouble("left", PixelUtil.toDIPFromPixel(left));
-      json.putDouble("top", PixelUtil.toDIPFromPixel(top));
-      json.putDouble("right", PixelUtil.toDIPFromPixel(right));
-      json.putDouble("bottom", PixelUtil.toDIPFromPixel(bottom));
+      json.putDouble("left", PixelUtil.toDIPFromPixel(left, metrics));
+      json.putDouble("top", PixelUtil.toDIPFromPixel(top, metrics));
+      json.putDouble("right", PixelUtil.toDIPFromPixel(right, metrics));
+      json.putDouble("bottom", PixelUtil.toDIPFromPixel(bottom, metrics));
     } else {
       json.putString("visibility", "unknown");
       json.putInt("index", index);
@@ -205,7 +212,8 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
             // how exactly lines are aligned, just their width
             Layout.Alignment.ALIGN_NORMAL,
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) ? -1 : getJustificationMode(),
-            getPaint());
+            getPaint(),
+            PixelUtil.displayMetricsOf(getContext()));
         setText(spanned);
       }
 
@@ -488,10 +496,11 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
   }
 
   public void setFontSize(float fontSize) {
+    DisplayMetrics metrics = PixelUtil.displayMetricsOf(getContext());
     mFontSize =
         mAdjustsFontSizeToFit
-            ? (float) Math.ceil(PixelUtil.toPixelFromSP(fontSize))
-            : (float) Math.ceil(PixelUtil.toPixelFromDIP(fontSize));
+            ? (float) Math.ceil(PixelUtil.toPixelFromSP(fontSize, Float.NaN, metrics))
+            : (float) Math.ceil(PixelUtil.toPixelFromDIP(fontSize, metrics));
 
     applyTextAttributes();
   }
@@ -525,7 +534,8 @@ public class ReactTextView extends AppCompatTextView implements ReactCompoundVie
       return;
     }
 
-    float letterSpacingPixels = PixelUtil.toPixelFromDIP(letterSpacing);
+    float letterSpacingPixels =
+        PixelUtil.toPixelFromDIP(letterSpacing, PixelUtil.displayMetricsOf(getContext()));
 
     // `letterSpacingPixels` and `getEffectiveFontSize` are both in pixels,
     // yielding an accurate em value.
