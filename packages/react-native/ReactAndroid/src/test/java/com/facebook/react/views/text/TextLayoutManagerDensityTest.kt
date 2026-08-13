@@ -93,6 +93,27 @@ class TextLayoutManagerDensityTest {
     assertThat(after.second).isCloseTo(before.second, WITHIN)
   }
 
+  // Inline views are laid out against a placeholder span sized in physical pixels, so that size has
+  // to come from the surface's display too — otherwise the placeholder and the view Fabric mounts
+  // into it disagree by the ratio between the two densities.
+  @Test
+  fun inlineViewSize_scalesWithTheSuppliedDensity() {
+    val supplied = PixelUtil.displayMetricsFor(SECONDARY_DENSITY, 1.0f)
+
+    assertThat(TextLayoutManager.inlineViewSizeToPixels(100.0, supplied)).isEqualTo(150)
+    assertThat(
+            TextLayoutManager.inlineViewSizeToPixels(
+                100.0,
+                PixelUtil.displayMetricsFor(PRIMARY_DENSITY, 1.0f),
+            ),
+        )
+        .isEqualTo(300)
+
+    // Moving the "primary display" must not move a size taken against `supplied`.
+    DisplayMetricsHolder.setScreenDisplayMetrics(PixelUtil.displayMetricsFor(1.0f, 1.0f))
+    assertThat(TextLayoutManager.inlineViewSizeToPixels(100.0, supplied)).isEqualTo(150)
+  }
+
   /** Returns the absolute font size, in physical pixels, of the spannable built for [metrics]. */
   private fun fontSizePxAt(metrics: DisplayMetrics): Int {
     val spannable =

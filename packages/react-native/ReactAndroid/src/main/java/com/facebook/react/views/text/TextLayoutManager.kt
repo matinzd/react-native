@@ -672,11 +672,7 @@ internal object TextLayoutManager {
 
   @VisibleForTesting
   internal fun inlineViewSizeToPixels(size: Double, displayMetrics: DisplayMetrics): Int =
-    ceil(PixelUtil.toPixelFromDIP(size.toFloat(), displayMetrics).toDouble()).toInt()
-
-  @VisibleForTesting
-  internal fun inlineViewSizeToPixels(size: Double): Int =
-    ceil(PixelUtil.toPixelFromDIP(size).toDouble()).toInt()
+      ceil(PixelUtil.toPixelFromDIP(size.toFloat(), displayMetrics).toDouble()).toInt()
 
   @OptIn(UnstableReactNativeAPI::class)
   fun getOrCreateSpannableForText(
