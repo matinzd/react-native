@@ -10,7 +10,6 @@ package com.facebook.react.uimanager
 import android.content.Context
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import androidx.annotation.VisibleForTesting
 import com.facebook.react.internal.featureflags.ReactNativeFeatureFlags
 import kotlin.math.min
 
@@ -125,26 +124,11 @@ public object PixelUtil {
    */
   @JvmStatic
   public fun displayMetricsOf(context: Context): DisplayMetrics =
-      if (isPerSurfaceTextScaleEnabled()) {
+      if (ReactNativeFeatureFlags.enablePerSurfaceTextScaleAndroid()) {
         context.resources.displayMetrics
       } else {
         DisplayMetricsHolder.getScreenDisplayMetrics()
       }
-
-  // Resolved once: this sits on the text draw path, and reaching into the C++-backed feature flags
-  // there would mean a JNI hop per conversion.
-  @Volatile private var perSurfaceTextScaleEnabled: Boolean? = null
-
-  private fun isPerSurfaceTextScaleEnabled(): Boolean =
-      perSurfaceTextScaleEnabled
-          ?: ReactNativeFeatureFlags.enablePerSurfaceTextScaleAndroid().also {
-            perSurfaceTextScaleEnabled = it
-          }
-
-  @VisibleForTesting
-  internal fun resetPerSurfaceTextScaleCache() {
-    perSurfaceTextScaleEnabled = null
-  }
 
   /* Kotlin extensions */
   public fun Int.dpToPx(): Float = toPixelFromDIP(this.toFloat())
