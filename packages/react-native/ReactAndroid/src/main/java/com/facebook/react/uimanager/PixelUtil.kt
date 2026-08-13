@@ -131,29 +131,41 @@ public object PixelUtil {
       }
 
   /* Kotlin extensions */
+  @Deprecated("Use the dpToPx(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Int.dpToPx(): Float = toPixelFromDIP(this.toFloat())
 
+  @Deprecated("Use the dpToPx(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Long.dpToPx(): Float = toPixelFromDIP(this.toFloat())
 
+  @Deprecated("Use the dpToPx(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Float.dpToPx(): Float = toPixelFromDIP(this)
 
+  @Deprecated("Use the dpToPx(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Double.dpToPx(): Float = toPixelFromDIP(this.toFloat())
 
+  @Deprecated("Use the pxToDp(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Int.pxToDp(): Float = toDIPFromPixel(this.toFloat())
 
+  @Deprecated("Use the pxToDp(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Long.pxToDp(): Float = toDIPFromPixel(this.toFloat())
 
+  @Deprecated("Use the pxToDp(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Float.pxToDp(): Float = toDIPFromPixel(this)
 
+  @Deprecated("Use the pxToDp(DisplayMetrics) overload, so conversions match the view's display.")
   public fun Double.pxToDp(): Float = toDIPFromPixel(this.toFloat())
 
   public fun Int.dpToPx(metrics: DisplayMetrics): Float = toPixelFromDIP(this.toFloat(), metrics)
+
+  public fun Long.dpToPx(metrics: DisplayMetrics): Float = toPixelFromDIP(this.toFloat(), metrics)
 
   public fun Float.dpToPx(metrics: DisplayMetrics): Float = toPixelFromDIP(this, metrics)
 
   public fun Double.dpToPx(metrics: DisplayMetrics): Float = toPixelFromDIP(this.toFloat(), metrics)
 
   public fun Int.pxToDp(metrics: DisplayMetrics): Float = toDIPFromPixel(this.toFloat(), metrics)
+
+  public fun Long.pxToDp(metrics: DisplayMetrics): Float = toDIPFromPixel(this.toFloat(), metrics)
 
   public fun Float.pxToDp(metrics: DisplayMetrics): Float = toDIPFromPixel(this, metrics)
 
